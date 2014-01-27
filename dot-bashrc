@@ -1,0 +1,40 @@
+# --- Navigation
+export MARKPATH=$HOME/.marks
+function jump { 
+    cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
+}
+function mark { 
+    mkdir -p $MARKPATH; ln -s $(pwd) $MARKPATH/$1
+}
+function unmark { 
+    rm -i $MARKPATH/$1 
+}
+function marks {
+    ls -l $MARKPATH | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
+}
+
+# --- Misc
+alias j='jump'
+alias ll='ls -l'
+alias la='ls -la'
+
+# --- Git
+alias gs='git status'
+alias gl='git log --limit 5'
+alias gp='git push'
+alias gd='git difftool'
+alias gdc='git difftool --cached'
+
+# --- Scanning
+function pull-scan {
+    curl -o ${2}.json -X GET ${1}:8181/v1/generate?title=${2}&framesPerDevice=5
+}
+function push-scan {
+    curl -d @${2}.json "Content-Type:application/json" -X POST http://${1}:8181/v1/scenes/add
+}
+function push-scan-localhost {
+    curl -d @${1}.json "Content-Type:application/json" -X POST http://localhost:8181/v1/scenes/add
+}
+                       
+# Run twolfson/sexy-bash-prompt: https://github.com/twolfson/sexy-bash-prompt
+. ~/.bash_prompt
