@@ -26,5 +26,10 @@ alias gps='git push'
 alias gd='git difftool'
 alias gdc='git difftool --cached'
 
+# --- Scanner
+function update-scanner {
+curl -v --header "Content-Type:application/octet-stream" --data-binary @shuttle-1.0-SNAPSHOT.jar -X POST http://${1}:8181/v1/software
+}
+
 # Run twolfson/sexy-bash-prompt: https://github.com/twolfson/sexy-bash-prompt
 . ~/.bash_prompt
