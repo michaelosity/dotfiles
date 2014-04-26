@@ -25,6 +25,15 @@ alias gpl='git pull'
 alias gps='git push'
 alias gd='git difftool'
 alias gdc='git difftool --cached'
+alias gcm='git checkout master'
+alias gcd='git checkout develop'
+alias gmd='git merge develop'
+alias grm='git rebase master'
+
+# --- Scanner
+function update-scanner {
+curl -v --header "Content-Type:application/octet-stream" --data-binary @shuttle-1.0-SNAPSHOT.jar -X POST http://${1}:8181/v1/software
+}
 
 # --- Java
 export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
