@@ -26,5 +26,13 @@ alias gps='git push'
 alias gd='git difftool'
 alias gdc='git difftool --cached'
 
+# --- Java
+export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
+
 # Run twolfson/sexy-bash-prompt: https://github.com/twolfson/sexy-bash-prompt
 . ~/.bash_prompt
+
+# remove /usr/local/bin and /usr/bin then add them back in the order we want
+export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/local/bin\::\::g" -e "s/^://" -e "s/:$//"`
+export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/bin\::\::g" -e "s/^://" -e "s/:$//"`
+export PATH="/usr/local/bin:/usr/bin:$PATH"
