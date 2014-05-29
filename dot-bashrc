@@ -38,6 +38,9 @@ curl -v --header "Content-Type:application/octet-stream" --data-binary @shuttle-
 # --- Java
 export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
 
+# --- Android
+export ANDROID_SDK='/Users/michael/Develop/android-sdk'
+
 # Run twolfson/sexy-bash-prompt: https://github.com/twolfson/sexy-bash-prompt
 . ~/.bash_prompt
 
