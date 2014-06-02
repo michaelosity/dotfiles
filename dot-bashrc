@@ -48,3 +48,8 @@ export ANDROID_SDK='/Users/michael/Develop/android-sdk'
 export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/local/bin\::\::g" -e "s/^://" -e "s/:$//"`
 export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/bin\::\::g" -e "s/^://" -e "s/:$//"`
 export PATH="/usr/local/bin:/usr/bin:$PATH"
+
+# homebrew packages sometimes include bash completion scripts (like git)
+for script in `brew --prefix`/etc/bash_completion.d/*; do
+  . $script
+done
