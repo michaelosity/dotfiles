@@ -40,6 +40,7 @@ export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
 
 # --- Android
 export ANDROID_SDK='/Users/michael/Develop/android-sdk'
+export ANDROID_HOME=$ANDROID_SDK
 
 # Run twolfson/sexy-bash-prompt: https://github.com/twolfson/sexy-bash-prompt
 . ~/.bash_prompt
