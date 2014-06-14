@@ -1,16 +1,16 @@
 # --- Navigation
 export MARKPATH=$HOME/.marks
 function jump { 
-    cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
+  cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
 }
 function mark { 
-    mkdir -p $MARKPATH; ln -s $(pwd) $MARKPATH/$1
+  mkdir -p $MARKPATH; ln -s $(pwd) $MARKPATH/$1
 }
 function unmark { 
-    rm -i $MARKPATH/$1 
+  rm -i $MARKPATH/$1 
 }
 function marks {
-    ls -l $MARKPATH | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
+  ls -l $MARKPATH | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
 }
 
 # --- Misc
@@ -32,7 +32,7 @@ alias grm='git rebase master'
 
 # --- Scanner
 function update-scanner {
-curl -v --header "Content-Type:application/octet-stream" --data-binary @shuttle-1.0-SNAPSHOT.jar -X POST http://${1}:8181/v1/software
+  curl -v --header "Content-Type:application/octet-stream" --data-binary @shuttle-1.0-SNAPSHOT.jar -X POST http://${1}:8181/v1/software
 }
 
 # --- Java
@@ -51,6 +51,10 @@ export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/bin\::\::g" -e "s/^://" -e "s/:$/
 export PATH="/usr/local/bin:/usr/bin:$PATH"
 
 # homebrew packages sometimes include bash completion scripts (like git)
-for script in `brew --prefix`/etc/bash_completion.d/*; do
-  . $script
-done
+BREWPREFIX=`brew --prefix`
+if [ -d $BREWPREFIX/etc/bash_completion.d ]; then
+  for script in $BREWPREFIX/etc/bash_completion.d/*; do
+    . $script
+  done
+fi
+
