@@ -39,8 +39,14 @@ function update-scanner {
 export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
 
 # --- Android
-export ANDROID_SDK='/Users/michael/Develop/android-sdk'
+export ANDROID_SDK='/usr/local/android-sdk'
+export ANDROID_SDK_HOME=$ANDROID_SDK
+export ANDROID_NDK='/usr/local/android-ndk'
+export ANDROID_NDK_HOME=$ANDROID_NDK
 export ANDROID_HOME=$ANDROID_SDK
+if [ -d $ANDROID_SDK ]; then
+    export PATH="$PATH:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools"
+fi
 
 # Run twolfson/sexy-bash-prompt: https://github.com/twolfson/sexy-bash-prompt
 . ~/.bash_prompt
