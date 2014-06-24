@@ -1,3 +1,6 @@
+# --- Basic
+set -o vi
+
 # --- Navigation
 export MARKPATH=$HOME/.marks
 function jump { 
@@ -17,6 +20,7 @@ function marks {
 alias j='jump'
 alias ll='ls -l'
 alias la='ls -la'
+alias h='history'
 
 # --- Git
 alias gs='git status'
@@ -39,13 +43,21 @@ function update-scanner {
 export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
 
 # --- Android
-export ANDROID_SDK='/usr/local/android-sdk'
+export ANDROID_SDK="/usr/local/opt/android-sdk"
 export ANDROID_SDK_HOME=$ANDROID_SDK
-export ANDROID_NDK='/usr/local/android-ndk'
+export ANDROID_NDK="/usr/local/opt/android-ndk"
 export ANDROID_NDK_HOME=$ANDROID_NDK
 export ANDROID_HOME=$ANDROID_SDK
 if [ -d $ANDROID_SDK ]; then
     export PATH="$PATH:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools"
+fi
+if [ -d $ANDROID_NDK ]; then
+    export PATH="$PATH:$ANDROID_NDK"
+fi
+
+# --- Haskell
+if [ -d /Users/michael/Library/Haskell/bin ]; then
+    export PATH="$PATH:/Users/michael/Library/Haskell/bin"
 fi
 
 # Run twolfson/sexy-bash-prompt: https://github.com/twolfson/sexy-bash-prompt
