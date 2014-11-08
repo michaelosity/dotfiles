@@ -1,5 +1,7 @@
 # --- Basic
 set -o vi
+export CLICOLOR=1
+export LSCOLORS=Gxfxcxdxbxegedabagacad
 
 # --- Navigation
 export MARKPATH=$HOME/.marks
@@ -24,7 +26,7 @@ alias h='history'
 
 # --- Git
 alias gs='git status'
-alias gl='git log --limit 5'
+alias gl='git log -n 5'
 alias gpl='git pull'
 alias gps='git push'
 alias gd='git difftool'
@@ -34,7 +36,7 @@ alias gcd='git checkout develop'
 alias gmd='git merge develop'
 alias grm='git rebase master'
 
-# --- Scanner
+# --- Bespoke Scanner
 function update-scanner {
   curl -v --header "Content-Type:application/octet-stream" --data-binary @shuttle-1.0-SNAPSHOT.jar -X POST http://${1}:8181/v1/software
 }
@@ -43,22 +45,22 @@ function update-scanner {
 export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
 
 # --- Android
-export ANDROID_SDK="/usr/local/opt/android-sdk"
-export ANDROID_SDK_HOME=$ANDROID_SDK
-export ANDROID_NDK="/usr/local/opt/android-ndk"
-export ANDROID_NDK_HOME=$ANDROID_NDK
-export ANDROID_HOME=$ANDROID_SDK
-if [ -d $ANDROID_SDK ]; then
-    export PATH="$PATH:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools"
-fi
-if [ -d $ANDROID_NDK ]; then
-    export PATH="$PATH:$ANDROID_NDK"
-fi
+#export ANDROID_SDK="/usr/local/opt/android-sdk"
+#export ANDROID_SDK_HOME=$ANDROID_SDK
+#export ANDROID_NDK="/usr/local/opt/android-ndk"
+#export ANDROID_NDK_HOME=$ANDROID_NDK
+#export ANDROID_HOME=$ANDROID_SDK
+#if [ -d $ANDROID_SDK ]; then
+#    export PATH="$PATH:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools"
+#fi
+#if [ -d $ANDROID_NDK ]; then
+#    export PATH="$PATH:$ANDROID_NDK"
+#fi
 
 # --- Haskell
-if [ -d /Users/michael/Library/Haskell/bin ]; then
-    export PATH="$PATH:/Users/michael/Library/Haskell/bin"
-fi
+#if [ -d /Users/michael/Library/Haskell/bin ]; then
+#    export PATH="$PATH:/Users/michael/Library/Haskell/bin"
+#fi
 
 # Run twolfson/sexy-bash-prompt: https://github.com/twolfson/sexy-bash-prompt
 . ~/.bash_prompt
