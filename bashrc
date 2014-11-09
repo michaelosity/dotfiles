@@ -1,11 +1,14 @@
 # --- Basic
 set -o vi
+export EDITOR="vi"
 export CLICOLOR=1
 export LSCOLORS=Gxfxcxdxbxegedabagacad
+bind '"\e[A":history-search-backward'
+bind '"\e[B":history-search-forward'
 
 # --- Navigation
-export MARKPATH=$HOME/.marks
 function jump { 
+export MARKPATH=$HOME/.marks
   cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
 }
 function mark { 
@@ -23,6 +26,7 @@ alias j='jump'
 alias ll='ls -l'
 alias la='ls -la'
 alias h='history'
+alias con="tail -40 -f /var/log/system.log"
 
 # --- Git
 alias gs='git status'
@@ -36,13 +40,8 @@ alias gcd='git checkout develop'
 alias gmd='git merge develop'
 alias grm='git rebase master'
 
-# --- Bespoke Scanner
-function update-scanner {
-  curl -v --header "Content-Type:application/octet-stream" --data-binary @shuttle-1.0-SNAPSHOT.jar -X POST http://${1}:8181/v1/software
-}
-
 # --- Java
-export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
+#export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
 
 # --- Android
 #export ANDROID_SDK="/usr/local/opt/android-sdk"
@@ -77,4 +76,3 @@ if [ -d $BREWPREFIX/etc/bash_completion.d ]; then
     . $script
   done
 fi
-
