@@ -6,6 +6,9 @@ export LSCOLORS=Gxfxcxdxbxegedabagacad
 bind '"\e[A":history-search-backward'
 bind '"\e[B":history-search-forward'
 
+# --- bup https://github.com/bup/bup
+export BUP_DIR=/Volumes/Nifty/.bup
+
 # --- Navigation
 function jump { 
 export MARKPATH=$HOME/.marks
