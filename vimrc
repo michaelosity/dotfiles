@@ -1,4 +1,4 @@
-colorscheme badwolf             " colorscheme
+colorscheme twilight256         " colorscheme
 inoremap jj <ESC>
 set tabstop=4                   " number of visual spaces per tab
 set softtabstop=4               " number of spaces in a tab when editing
