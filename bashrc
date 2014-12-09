@@ -42,16 +42,16 @@ alias duh3='du -h -d 3 .'
 
 # --- Networking
 ii() {
-        echo -e "\nYou are logged on ${RED}$HOST"
-        echo -e "\nAdditionnal information:$NC " ; uname -a
-        echo -e "\n${RED}Users logged on:$NC " ; w -h
-        echo -e "\n${RED}Current date :$NC " ; date
-        echo -e "\n${RED}Machine stats :$NC " ; uptime
-        echo -e "\n${RED}Current network location :$NC " ; scselect
-        echo -e "\n${RED}Public facing IP Address :$NC " ;myip
-        #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
-        echo
-    }
+  echo -e "\nYou are logged on ${RED}$HOST"
+  echo -e "\nAdditionnal information:$NC " ; uname -a
+  echo -e "\n${RED}Users logged on:$NC " ; w -h
+  echo -e "\n${RED}Current date :$NC " ; date
+  echo -e "\n${RED}Machine stats :$NC " ; uptime
+  echo -e "\n${RED}Current network location :$NC " ; scselect
+  echo -e "\n${RED}Public facing IP Address :$NC " ;myip
+  #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
+  echo
+}
 
 # --- Git
 alias gs='git status'
@@ -65,39 +65,26 @@ alias gcd='git checkout develop'
 alias gmd='git merge develop'
 alias grm='git rebase master'
 
-# --- Java
-#export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
-
-# --- Android
-#export ANDROID_SDK="/usr/local/opt/android-sdk"
-#export ANDROID_SDK_HOME=$ANDROID_SDK
-#export ANDROID_NDK="/usr/local/opt/android-ndk"
-#export ANDROID_NDK_HOME=$ANDROID_NDK
-#export ANDROID_HOME=$ANDROID_SDK
-#if [ -d $ANDROID_SDK ]; then
-#    export PATH="$PATH:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools"
-#fi
-#if [ -d $ANDROID_NDK ]; then
-#    export PATH="$PATH:$ANDROID_NDK"
-#fi
-
-# --- Haskell
-#if [ -d /Users/michael/Library/Haskell/bin ]; then
-#    export PATH="$PATH:/Users/michael/Library/Haskell/bin"
-#fi
-
 # Run twolfson/sexy-bash-prompt: https://github.com/twolfson/sexy-bash-prompt
 . ~/.bash_prompt
 
-# remove /usr/local/bin and /usr/bin then add them back in the order we want
-export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/local/bin\::\::g" -e "s/^://" -e "s/:$//"`
-export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/bin\::\::g" -e "s/^://" -e "s/:$//"`
-export PATH="/usr/local/bin:/usr/bin:$PATH"
+OS=`uname`
 
-# homebrew packages sometimes include bash completion scripts (like git)
-BREWPREFIX=`brew --prefix`
-if [ -d $BREWPREFIX/etc/bash_completion.d ]; then
-  for script in $BREWPREFIX/etc/bash_completion.d/*; do
-    . $script
-  done
+if [ "${OS}" == "Darwin" ]; then
+  # remove /usr/local/bin and /usr/bin then add them back in the order we want
+  echo "Loading ${OS} specific config..."
+  export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/local/bin\::\::g" -e "s/^://" -e "s/:$//"`
+  export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/bin\::\::g" -e "s/^://" -e "s/:$//"`
+  export PATH="/usr/local/bin:/usr/bin:$PATH"
+
+  # homebrew packages sometimes include bash completion scripts (like git)
+  BREWPREFIX=`brew --prefix`
+  if [ -d $BREWPREFIX/etc/bash_completion.d ]; then
+    for script in $BREWPREFIX/etc/bash_completion.d/*; do
+      . $script
+    done
+  fi
+
+  # --- Java
+  #export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
 fi
