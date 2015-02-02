@@ -1,32 +1,9 @@
+echo
+echo "[BASHRC]" 
+
 # --- Basic
 set -o vi
 export EDITOR="vi"
-export CLICOLOR=1
-export LSCOLORS=Gxfxcxdxbxegedabagacad
-bind '"\e[A":history-search-backward'
-bind '"\e[B":history-search-forward'
-export BLOCKSIZE=1m
-
-# --- Navigation
-alias j='jump'
-function jump { 
-export MARKPATH=$HOME/.marks
-  cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
-}
-function mark { 
-  mkdir -p $MARKPATH; ln -s $(pwd) $MARKPATH/$1
-}
-function unmark { 
-  rm -i $MARKPATH/$1 
-}
-function marks {
-  ls -l $MARKPATH | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
-}
-
-# --- Find files
-ff () { /usr/bin/find . -name "$@" ; }      # ff:       Find file under the current directory
-ffs () { /usr/bin/find . -name "$@"'*' ; }  # ffs:      Find file whose name starts with a given string
-ffe () { /usr/bin/find . -name '*'"$@" ; }  # ffe:      Find file whose name ends with a given string
 
 # --- Misc
 alias l='ls'
@@ -40,19 +17,6 @@ alias duh='du -h -d 1 .'
 alias duh2='du -h -d 2 .'
 alias duh3='du -h -d 3 .'
 
-# --- Networking
-ii() {
-  echo -e "\nYou are logged on ${RED}$HOST"
-  echo -e "\nAdditionnal information:$NC " ; uname -a
-  echo -e "\n${RED}Users logged on:$NC " ; w -h
-  echo -e "\n${RED}Current date :$NC " ; date
-  echo -e "\n${RED}Machine stats :$NC " ; uptime
-  echo -e "\n${RED}Current network location :$NC " ; scselect
-  echo -e "\n${RED}Public facing IP Address :$NC " ;myip
-  #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
-  echo
-}
-
 # --- Git
 alias gs='git status'
 alias gl='git log -n 5'
@@ -65,14 +29,52 @@ alias gcd='git checkout develop'
 alias gmd='git merge develop'
 alias grm='git rebase master'
 
-# Run twolfson/sexy-bash-prompt: https://github.com/twolfson/sexy-bash-prompt
-. ~/.bash_prompt
+# --- OS specific
 
-OS=`uname`
+if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 
-if [ "${OS}" == "Darwin" ]; then
+  echo "  BSD/Linux-like"
+
+  export CLICOLOR=1
+  export LSCOLORS=Gxfxcxdxbxegedabagacad
+  bind '"\e[A":history-search-backward'
+  bind '"\e[B":history-search-forward'
+  export BLOCKSIZE=1m
+
+  . ~/.bash_prompt
+
+  # find files
+  ff () { /usr/bin/find . -name "$@" ; }      # ff:       Find file under the current directory
+  ffs () { /usr/bin/find . -name "$@"'*' ; }  # ffs:      Find file whose name starts with a given string
+  ffe () { /usr/bin/find . -name '*'"$@" ; }  # ffe:      Find file whose name ends with a given string
+
+  # navigation
+  alias j='jump'
+
+  function jump { 
+    export MARKPATH=$HOME/.marks
+    cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
+  }
+  
+  function mark { 
+    mkdir -p $MARKPATH; ln -s $(pwd) $MARKPATH/$1
+  }
+
+  function unmark { 
+    rm -i $MARKPATH/$1 
+  }
+
+  function marks {
+    ls -l $MARKPATH | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
+  }
+
+fi
+
+if [ "$(uname)" == "Darwin" ]; then
+
+  echo "  OSX"
+
   # remove /usr/local/bin and /usr/bin then add them back in the order we want
-  echo "Loading ${OS} specific config..."
   export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/local/bin\::\::g" -e "s/^://" -e "s/:$//"`
   export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/bin\::\::g" -e "s/^://" -e "s/:$//"`
   export PATH="/usr/local/bin:/usr/bin:$PATH"
@@ -85,6 +87,24 @@ if [ "${OS}" == "Darwin" ]; then
     done
   fi
 
-  # --- Java
+  # java
   #export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
+
+  # internet interface
+  ii() {
+    echo -e "\nYou are logged on ${RED}$HOST"
+    echo -e "\nAdditionnal information:$NC " ; uname -a
+    echo -e "\n${RED}Users logged on:$NC " ; w -h
+    echo -e "\n${RED}Current date :$NC " ; date
+    echo -e "\n${RED}Machine stats :$NC " ; uptime
+    echo -e "\n${RED}Current network location :$NC " ; scselect
+    echo -e "\n${RED}Public facing IP Address :$NC " ;myip
+    #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
+    echo
+  }
+
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+  
+    echo "  WINDOWS"
+
 fi
