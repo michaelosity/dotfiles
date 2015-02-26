@@ -1,6 +1,3 @@
-echo
-echo "[BASHRC]" 
-
 # --- Basic
 set -o vi
 export EDITOR="vi"
@@ -32,8 +29,6 @@ alias grm='git rebase master'
 # --- OS specific
 
 if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-
-  echo "  BSD/Linux-like"
 
   export CLICOLOR=1
   export LSCOLORS=Gxfxcxdxbxegedabagacad
@@ -72,8 +67,6 @@ fi
 
 if [ "$(uname)" == "Darwin" ]; then
 
-  echo "  OSX"
-
   # remove /usr/local/bin and /usr/bin then add them back in the order we want
   export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/local/bin\::\::g" -e "s/^://" -e "s/:$//"`
   export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/bin\::\::g" -e "s/^://" -e "s/:$//"`
@@ -102,9 +95,5 @@ if [ "$(uname)" == "Darwin" ]; then
     #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
     echo
   }
-
-elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
-  
-    echo "  WINDOWS"
 
 fi
