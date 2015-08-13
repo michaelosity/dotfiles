@@ -46,9 +46,9 @@ if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]
 
   # navigation
   alias j='jump'
+  export MARKPATH=$HOME/.marks
 
   function jump { 
-    export MARKPATH=$HOME/.marks
     cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
   }
   
@@ -74,11 +74,13 @@ if [ "$(uname)" == "Darwin" ]; then
   export PATH="/usr/local/bin:/usr/bin:$PATH"
 
   # homebrew packages sometimes include bash completion scripts (like git)
-  BREWPREFIX=`brew --prefix`
-  if [ -d $BREWPREFIX/etc/bash_completion.d ]; then
-    for script in $BREWPREFIX/etc/bash_completion.d/*; do
-      . $script
-    done
+  if [ -d "/usr/local/Cellar" ]; then
+    BREWPREFIX=`brew --prefix`
+    if [ -d $BREWPREFIX/etc/bash_completion.d ]; then
+     for script in $BREWPREFIX/etc/bash_completion.d/*; do
+       . $script
+     done
+    fi
   fi
 
   # internet interface
