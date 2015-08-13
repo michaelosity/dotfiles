@@ -80,19 +80,14 @@ if [ "$(uname)" == "Darwin" ]; then
     done
   fi
 
-  # java
-  #export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
-
   # internet interface
   ii() {
-    echo -e "\nYou are logged on ${RED}$HOST"
-    echo -e "\nAdditionnal information:$NC " ; uname -a
-    echo -e "\n${RED}Users logged on:$NC " ; w -h
-    echo -e "\n${RED}Current date :$NC " ; date
-    echo -e "\n${RED}Machine stats :$NC " ; uptime
-    echo -e "\n${RED}Current network location :$NC " ; scselect
-    echo -e "\n${RED}Public facing IP Address :$NC " ;myip
-    #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
+    echo -e "\nHOST\n$HOSTNAME"
+    echo -e "\nADDITIONAL INFORMATION" ; uname -a
+    echo -e "\nMACHINE STATS" ; uptime
+    echo -e "\nCURRENT NETWORK LOCATION" ; scselect
+    echo -e "\nIP ADDRESS (PRIVATE)" ; ipconfig getifaddr en0 
+    echo -e "\nIP ADDRESS (PUBLIC)" ; curl ipecho.net/plain ; echo
     echo
   }
 
