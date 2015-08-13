@@ -18,6 +18,7 @@ echo "VIM COLORS"
 if [ -d "${HOME}/.vim" ]; then 
     echo "  ~/.vim already exists"
 else
+    echo "  Creating ~/.vim"
     ln -s "${PWD}/vim" "${HOME}/.vim"
 fi
 
