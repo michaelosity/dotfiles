@@ -28,6 +28,15 @@ alias gcd='git checkout develop'
 alias gmd='git merge develop'
 alias grm='git rebase master'
 
+gup() {
+  for repo in `ls -d */`; do
+    echo "${repo}"
+    echo "------------------------------"
+    (cd "${repo}" && git pull)
+    echo ""
+   done
+}
+
 # --- OS specific
 
 if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
@@ -47,46 +56,56 @@ if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]
 
   # navigation
   alias j='jump'
-  export MARKPATH=$HOME/.marks
+  export MARKPATH=${HOME}/.marks
 
   function jump { 
-    cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
+    cd -P ${MARKPATH}/$1 2>/dev/null || echo "No such mark: $1"
   }
   
   function mark { 
-    mkdir -p $MARKPATH; ln -s $(pwd) $MARKPATH/$1
+    mkdir -p ${MARKPATH}; ln -s $(pwd) $MARKPATH/$1
   }
 
   function unmark { 
-    rm -i $MARKPATH/$1 
+    rm -i ${MARKPATH}/$1 
   }
 
   function marks {
-    ls -l $MARKPATH | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
+    ls -l ${MARKPATH} | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
   }
 
 fi
 
 if [ "$(uname)" == "Darwin" ]; then
 
-  # remove /usr/local/bin and /usr/bin then add them back in the order we want
-  export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/local/bin\::\::g" -e "s/^://" -e "s/:$//"`
-  export PATH=`echo ":$PATH:" | sed -e "s:\:/usr/bin\::\::g" -e "s/^://" -e "s/:$//"`
-  export PATH="/usr/local/bin:/usr/bin:$PATH"
+  # swift
+  SWIFT_LATEST=/Library/Developer/Toolchains/swift-latest.xctoolchain
 
+  # remove /usr/local/bin and /usr/bin then add them back in the order we want
+  export PATH=`echo ":${PATH}:" | sed -e "s:\:/usr/local/bin\::\::g" -e "s/^://" -e "s/:$//"`
+  export PATH=`echo ":${PATH}:" | sed -e "s:\:/usr/bin\::\::g" -e "s/^://" -e "s/:$//"`
+  export PATH="/usr/local/bin:/usr/bin:${PATH}"
+  if [ -d "${SWIFT_LATEST}" ]; then
+    export PATH=${SWIFT_LATEST}/usr/bin:"${PATH}"
+  fi
+   
   # homebrew packages sometimes include bash completion scripts (like git)
   if [ -d "/usr/local/Cellar" ]; then
-    BREWPREFIX=`brew --prefix`
-    if [ -d $BREWPREFIX/etc/bash_completion.d ]; then
-     for script in $BREWPREFIX/etc/bash_completion.d/*; do
+    HOMEBREW_PREFIX=`brew --prefix`
+    if [ -d ${HOMEBREW_PREFIX}/etc/bash_completion.d ]; then
+     for script in ${HOMEBREW_PREFIX}/etc/bash_completion.d/*; do
        . $script
      done
     fi
   fi
 
+  xc() {
+    xcrun launch-with-toolchain ${SWIFT_LATEST}
+  }
+
   # internet interface
   ii() {
-    echo -e "\nHOST\n$HOSTNAME"
+    echo -e "\nHOST\n${HOSTNAME}"
     echo -e "\nADDITIONAL INFORMATION" ; uname -a
     echo -e "\nMACHINE STATS" ; uptime
     echo -e "\nCURRENT NETWORK LOCATION" ; scselect
