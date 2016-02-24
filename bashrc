@@ -14,6 +14,10 @@ alias duh='du -h -d 1 .'
 alias duh2='du -h -d 2 .'
 alias duh3='du -h -d 3 .'
 
+function xzarch {
+ tar cf - $1 | xz -9 --threads=0 > $1.tar.xz 
+}
+
 # --- Git
 alias gs='git status'
 alias gl='git log -n 5'
@@ -28,7 +32,7 @@ alias gcd='git checkout develop'
 alias gmd='git merge develop'
 alias grm='git rebase master'
 
-gup() {
+function gup {
   for repo in `ls -d */`; do
     echo "${repo}"
     echo "------------------------------"
