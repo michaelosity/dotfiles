@@ -53,6 +53,8 @@ if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]
 
   . ~/.bash_prompt
 
+  alias cup='carthage update --platform iOS --configuration Release'
+
   # find files
   ff () { /usr/bin/find . -name "$@" ; }      # ff:       Find file under the current directory
   ffs () { /usr/bin/find . -name "$@"'*' ; }  # ffs:      Find file whose name starts with a given string
