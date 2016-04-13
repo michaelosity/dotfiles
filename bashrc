@@ -32,7 +32,7 @@ alias gcd='git checkout develop'
 alias gmd='git merge develop'
 alias grm='git rebase master'
 
-function gup {
+function gupd {
   for repo in `ls -d */`; do
     echo "${repo}"
     echo "------------------------------"
@@ -53,7 +53,8 @@ if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]
 
   . ~/.bash_prompt
 
-  alias cup='carthage update --platform iOS --configuration Release'
+  alias cupd='carthage update --platform iOS --configuration Release'
+  alias bupd='brew update && brew upgrade && brew cleanup'
 
   # find files
   ff () { /usr/bin/find . -name "$@" ; }      # ff:       Find file under the current directory
