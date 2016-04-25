@@ -55,6 +55,8 @@ if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]
 
   alias cupd='carthage update --platform iOS --configuration Release'
   alias bupd='brew update && brew upgrade && brew cleanup'
+  
+  export HOMEBREW_NO_ANALYTICS=1
 
   # find files
   ff () { /usr/bin/find . -name "$@" ; }      # ff:       Find file under the current directory
