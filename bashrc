@@ -2,6 +2,10 @@
 set -o vi
 export EDITOR="vi"
 
+# --- Logging
+# https://spin.atomicobject.com/2016/05/28/log-bash-history/
+export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) $(history 1)" >> ~/.logs/bash-history-$(date "+%Y-%m-%d").log; fi'
+
 # --- Misc
 alias l='ls'
 alias ll='ls -l'
