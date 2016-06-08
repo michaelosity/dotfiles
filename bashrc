@@ -1,12 +1,41 @@
-# --- Basic
+####
+#### INITIALIZATION
+####
+
+# Don't do anything if not running interactively
+[ -z "$PS1" ] && return
+
+###
+### PLATFORM
+###
+
+platform='unknown'
+uname_string=`uname`
+if [[ "${uname_string}" == 'Darwin' ]]; then
+  platform='mac'
+elif [[ "$(expr substr $(uname -s) 1 5)" == ‘Linux’ ]]; then
+  platform='linux'
+fi
+
+###
+### BASIC
+###
+
 set -o vi
 export EDITOR="vi"
 
-# --- Logging
-# https://spin.atomicobject.com/2016/05/28/log-bash-history/
-export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) $(history 1)" >> ~/.logs/bash-history-$(date "+%Y-%m-%d").log; fi'
+###
+### COLORS
+###
 
-# --- Misc
+export CLICOLOR=1
+export LSCOLORS=Gxfxcxdxbxegedabagacad
+export LSDCOLORS=Gxfxcxdxbxegedabagacad
+
+###
+### COMMON ALIASES
+###
+
 alias l='ls'
 alias ll='ls -l'
 alias la='ls -la'
@@ -22,7 +51,10 @@ function xzarch {
  tar cf - $1 | xz -9 --threads=0 > $1.tar.xz 
 }
 
-# --- Git
+###
+### GIT
+###
+
 alias gs='git status'
 alias gl='git log -n 5'
 alias gpl='git pull'
@@ -45,29 +77,22 @@ function gupd {
    done
 }
 
-# --- OS specific
+###
+### NON-WINDOWS
+###
 
-if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+if [[ “${platform}” == “mac” || “${platform}” == “linux” ]]; then
 
-  export CLICOLOR=1
-  export LSCOLORS=Gxfxcxdxbxegedabagacad
   bind '"\e[A":history-search-backward'
   bind '"\e[B":history-search-forward'
   export BLOCKSIZE=1m
 
-  . ~/.bash_prompt
-
-  alias cupd='carthage update --platform iOS --configuration Release'
-  alias bupd='brew update && brew upgrade && brew cleanup'
-  
-  export HOMEBREW_NO_ANALYTICS=1
-
-  # find files
+  # Find files
   ff () { /usr/bin/find . -name "$@" ; }      # ff:       Find file under the current directory
   ffs () { /usr/bin/find . -name "$@"'*' ; }  # ffs:      Find file whose name starts with a given string
   ffe () { /usr/bin/find . -name '*'"$@" ; }  # ffe:      Find file whose name ends with a given string
 
-  # navigation
+  # Navigation
   alias j='jump'
   export MARKPATH=${HOME}/.marks
 
@@ -76,7 +101,7 @@ if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]
   }
   
   function mark { 
-    mkdir -p ${MARKPATH}; ln -s $(pwd) $MARKPATH/$1
+    mkdir -p ${MARKPATH}; ln -s $(pwd) ${MARKPATH}/$1
   }
 
   function unmark { 
@@ -89,34 +114,45 @@ if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]
 
 fi
 
-if [ "$(uname)" == "Darwin" ]; then
+###
+### MAC
+###
 
-  # swift
-  SWIFT_LATEST=/Library/Developer/Toolchains/swift-latest.xctoolchain
+if [[ “${platform}” == “mac” ]]; then
 
-  # remove /usr/local/bin and /usr/bin then add them back in the order we want
+  # Java
+  export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+
+  # Swift
+  latest_swift=/Library/Developer/Toolchains/swift-latest.xctoolchain
+  xc() {
+    xcrun launch-with-toolchain ${latest_swift}
+  } 
+
+  # Remove /usr/local/bin and /usr/bin then add them back in the order we want
   export PATH=`echo ":${PATH}:" | sed -e "s:\:/usr/local/bin\::\::g" -e "s/^://" -e "s/:$//"`
   export PATH=`echo ":${PATH}:" | sed -e "s:\:/usr/bin\::\::g" -e "s/^://" -e "s/:$//"`
-  export PATH="/usr/local/bin:/usr/bin:${PATH}"
-  if [ -d "${SWIFT_LATEST}" ]; then
-    export PATH=${SWIFT_LATEST}/usr/bin:"${PATH}"
+  export PATH="/usr/local/bin:/usr/bin:~/bin/:${PATH}"
+  if [ -d "${latest_swift}" ]; then
+    export PATH=${latest_swift}/usr/bin:"${PATH}"
   fi
    
-  # homebrew packages sometimes include bash completion scripts (like git)
+  # Homebrew
+  alias bupd='brew update && brew upgrade && brew cleanup'
+  export HOMEBREW_NO_ANALYTICS=1
   if [ -d "/usr/local/Cellar" ]; then
-    HOMEBREW_PREFIX=`brew --prefix`
-    if [ -d ${HOMEBREW_PREFIX}/etc/bash_completion.d ]; then
-     for script in ${HOMEBREW_PREFIX}/etc/bash_completion.d/*; do
+    homebrew_prefix=`brew --prefix`
+    if [ -d ${homebrew_prefix}/etc/bash_completion.d ]; then
+     for script in ${homebrew_prefix}/etc/bash_completion.d/*; do
        . $script
      done
     fi
   fi
 
-  xc() {
-    xcrun launch-with-toolchain ${SWIFT_LATEST}
-  }
+  # Carthage
+  alias cupd='carthage update --platform iOS --configuration Release'
 
-  # internet interface
+  # Internet Interface
   ii() {
     echo -e "\nHOST\n${HOSTNAME}"
     echo -e "\nADDITIONAL INFORMATION" ; uname -a
@@ -128,3 +164,119 @@ if [ "$(uname)" == "Darwin" ]; then
   }
 
 fi
+
+###
+### BASH HISTORY
+###
+
+export HISTCONTROL=ignoreboth
+
+# Append to the history file, don't overwrite itj
+shopt -s histappend
+
+# Check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS
+shopt -s checkwinsize
+
+###
+### PROMPT
+###
+
+prompt_git() {
+
+    local branch_name=""
+
+    # check if the current directory is in a git repository
+    if [ $(git rev-parse --is-inside-work-tree &>/dev/null; printf "%s" $?) == 0 ]; then
+
+        # get the short symbolic ref
+        # if HEAD isn't a symbolic ref, get the short SHA
+        # otherwise, just give up
+        branch_name="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
+                      git rev-parse --short HEAD 2> /dev/null || \
+                      printf "(unknown)")"
+
+        printf "$1$branch_name"
+    else
+        return
+    fi
+}
+
+set_prompts() {
+    local black=""
+    local blue=""
+    local bold=""
+    local cyan=""
+    local green=""
+    local orange=""
+    local purple=""
+    local red=""
+    local reset=""
+    local white=""
+    local yellow=""
+
+    local host_style=""
+    local user_style=""
+
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        tput sgr0 # reset colors
+        bold=$(tput bold)
+        reset=$(tput sgr0)
+        black=$(tput setaf 0)
+        blue=$(tput setaf 33)
+        cyan=$(tput setaf 37)
+        green=$(tput setaf 64)
+        orange=$(tput setaf 166)
+        purple=$(tput setaf 125)
+        red=$(tput setaf 124)
+        white=$(tput setaf 15)
+        yellow=$(tput setaf 136)
+    else
+        bold=""
+        reset="\e[0m"
+        black="\e[1;30m"
+        blue="\e[1;34m"
+        cyan="\e[1;36m"
+        green="\e[1;32m"
+        orange="\e[1;33m"
+        purple="\e[1;35m"
+        red="\e[1;31m"
+        white="\e[1;37m"
+        yellow="\e[1;33m"
+    fi
+
+    # logged in as root
+    if [[ "$USER" == "root" ]]; then
+        user_style="\[$bold$red\]"
+    else
+        user_style="\[$orange\]"
+    fi
+
+    # connected via ssh
+    if [[ "$SSH_TTY" ]]; then
+        host_style="\[$bold$red\]"
+    else
+        host_style="\[$yellow\]"
+    fi
+
+    # set the terminal title to the current working directory
+    PS1="\[\033]0;\w\007\]"
+
+    PS1+="\n" # newline
+    PS1+="\[$user_style\]\u" # username
+    PS1+="\[$reset$white\]@"
+    PS1+="\[$host_style\]\h" # host
+    PS1+="\[$reset$white\]: "
+    PS1+="\[$green\]\w" # working directory
+    PS1+="\$(prompt_git \"$white on $cyan\")" # git repository details
+    PS1+="\n"
+    PS1+="\[$reset$white\]\$ \[$reset\]" # $ (and reset color)
+
+    export PS1
+}
+
+set_prompts
+unset set_prompts
+
+
+
