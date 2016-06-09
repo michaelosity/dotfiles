@@ -182,6 +182,14 @@ shopt -s checkwinsize
 ### PROMPT
 ###
 
+# http://web.archive.org/web/20131009193526/http://bitmote.com/index.php?post/2012/11/19/Using-ANSI-Color-Codes-to-Colorize-Your-Bash-Prompt-on-Linux
+
+reset_style="\[\e[0m\]"
+grey_style="\[\e[48;5;8m\e[38;5;15m\]"    # grey (8m) background, white (15m) foreground
+blue_style="\[\e[48;5;24m\e[38;5;15m\]"   # blue (24m) background, white (15m) foreground
+green_style="\[\e[48;5;28m\e[38;5;15m\]"  # green (28m) background, white (15m) foreground
+title_style="\[\e]0;\w\007\]"             # sets window title to current working directory
+
 __prompt_git() {
 
     local branch_name=""
@@ -196,16 +204,10 @@ __prompt_git() {
                       git rev-parse --short HEAD 2> /dev/null || \
                       printf "(unknown)")"
 
-        printf "$branch_name"
+        printf " $branch_name "
     else
         return
     fi
 }
 
-# see http://web.archive.org/web/20131009193526/http://bitmote.com/index.php?post/2012/11/19/Using-ANSI-Color-Codes-to-Colorize-Your-Bash-Prompt-on-Linux
-
-color_segment1="\[\e[48;5;8m\e[38;5;15m\]"    
-color_segment2="\[\e[48;5;24m\e[38;5;15m\]"
-color_segment3="\[\e[48;5;28m\e[38;5;15m\]"
-
-export PS1="\[\e]0;\w\007\]\n$color_segment1 \u@\h $color_segment2 \w $color_segment3 \$(__prompt_git) \[\e[0;00m\]\n\$ "
+export PS1="$title_style\n$grey_style \u@\h $blue_style \w $green_style\$(__prompt_git)$reset_style\n\$ "
