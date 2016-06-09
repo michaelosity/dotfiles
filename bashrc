@@ -182,7 +182,7 @@ shopt -s checkwinsize
 ### PROMPT
 ###
 
-prompt_git() {
+__prompt_git() {
 
     local branch_name=""
 
@@ -196,87 +196,16 @@ prompt_git() {
                       git rev-parse --short HEAD 2> /dev/null || \
                       printf "(unknown)")"
 
-        printf "$1$branch_name"
+        printf "$branch_name"
     else
         return
     fi
 }
 
-set_prompts() {
-    local black=""
-    local blue=""
-    local bold=""
-    local cyan=""
-    local green=""
-    local orange=""
-    local purple=""
-    local red=""
-    local reset=""
-    local white=""
-    local yellow=""
+# see http://web.archive.org/web/20131009193526/http://bitmote.com/index.php?post/2012/11/19/Using-ANSI-Color-Codes-to-Colorize-Your-Bash-Prompt-on-Linux
 
-    local host_style=""
-    local user_style=""
+color_segment1="\[\e[48;5;8m\e[38;5;15m\]"    
+color_segment2="\[\e[48;5;24m\e[38;5;15m\]"
+color_segment3="\[\e[48;5;28m\e[38;5;15m\]"
 
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-        tput sgr0 # reset colors
-        bold=$(tput bold)
-        reset=$(tput sgr0)
-        black=$(tput setaf 0)
-        blue=$(tput setaf 33)
-        cyan=$(tput setaf 37)
-        green=$(tput setaf 64)
-        orange=$(tput setaf 166)
-        purple=$(tput setaf 125)
-        red=$(tput setaf 124)
-        white=$(tput setaf 15)
-        yellow=$(tput setaf 136)
-    else
-        bold=""
-        reset="\e[0m"
-        black="\e[1;30m"
-        blue="\e[1;34m"
-        cyan="\e[1;36m"
-        green="\e[1;32m"
-        orange="\e[1;33m"
-        purple="\e[1;35m"
-        red="\e[1;31m"
-        white="\e[1;37m"
-        yellow="\e[1;33m"
-    fi
-
-    # logged in as root
-    if [[ "$USER" == "root" ]]; then
-        user_style="\[$bold$red\]"
-    else
-        user_style="\[$orange\]"
-    fi
-
-    # connected via ssh
-    if [[ "$SSH_TTY" ]]; then
-        host_style="\[$bold$red\]"
-    else
-        host_style="\[$yellow\]"
-    fi
-
-    # set the terminal title to the current working directory
-    PS1="\[\033]0;\w\007\]"
-
-    PS1+="\n" # newline
-    PS1+="\[$user_style\]\u" # username
-    PS1+="\[$reset$white\]@"
-    PS1+="\[$host_style\]\h" # host
-    PS1+="\[$reset$white\]: "
-    PS1+="\[$green\]\w" # working directory
-    PS1+="\$(prompt_git \"$white on $cyan\")" # git repository details
-    PS1+="\n"
-    PS1+="\[$reset$white\]\$ \[$reset\]" # $ (and reset color)
-
-    export PS1
-}
-
-set_prompts
-unset set_prompts
-
-
-
+export PS1="\[\e]0;\w\007\]\n$color_segment1 \u@\h $color_segment2 \w $color_segment3 \$(__prompt_git) \[\e[0;00m\]\n\$ "
