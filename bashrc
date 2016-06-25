@@ -132,7 +132,7 @@ if [[ “${platform}” == “mac” ]]; then
   # Remove /usr/local/bin and /usr/bin then add them back in the order we want
   export PATH=`echo ":${PATH}:" | sed -e "s:\:/usr/local/bin\::\::g" -e "s/^://" -e "s/:$//"`
   export PATH=`echo ":${PATH}:" | sed -e "s:\:/usr/bin\::\::g" -e "s/^://" -e "s/:$//"`
-  export PATH="/usr/local/bin:/usr/bin:~/bin/:${PATH}"
+  export PATH="/usr/local/bin:/usr/bin:~/bin:${PATH}"
   if [ -d "${latest_swift}" ]; then
     export PATH=${latest_swift}/usr/bin:"${PATH}"
   fi
