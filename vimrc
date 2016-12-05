@@ -1,7 +1,8 @@
-colorscheme twilight256         " colorscheme
+colorscheme gruvbox             " colorscheme
 inoremap jj <ESC>
-set tabstop=2                   " number of visual spaces per tab
-set softtabstop=2               " number of spaces in a tab when editing
+set background=dark             " use dark background
+set tabstop=4                   " number of visual spaces per tab
+set softtabstop=4               " number of spaces in a tab when editing
 set expandtab                   " tabs --> spaces
 set number 		                  " show line numbers
 set cursorline                  " highlight current line
