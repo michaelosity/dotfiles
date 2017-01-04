@@ -138,6 +138,7 @@ if [[ “${platform}” == “mac” ]]; then
   fi
    
   # Homebrew
+  alias bl='brew list'
   alias bupd='brew update && brew upgrade && brew cleanup'
   export HOMEBREW_NO_ANALYTICS=1
   if [ -d "/usr/local/Cellar" ]; then
@@ -150,6 +151,7 @@ if [[ “${platform}” == “mac” ]]; then
   fi
 
   # Carthage
+  alias cout='carthage outdated'
   alias cupd='carthage update --platform iOS --configuration Release'
 
   # Internet Interface

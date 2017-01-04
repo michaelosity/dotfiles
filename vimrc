@@ -16,5 +16,3 @@ set foldmethod=indent           " fold based on indent level
 let mapleader=","
 syntax enable                   " color-code files
 filetype plugin indent on
-
-
