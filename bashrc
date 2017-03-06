@@ -78,6 +78,12 @@ function gupd {
 }
 
 ###
+### SECURE
+###
+
+[[ -s ~/.secure ]] && source ~/.secure
+
+###
 ### NON-WINDOWS
 ###
 
@@ -152,7 +158,7 @@ if [[ “${platform}” == “mac” ]]; then
 
   # Carthage
   alias cout='carthage outdated'
-  alias cupd='carthage update --platform iOS --configuration Release'
+  alias cupd='carthage update --platform iOS --configuration Release --no-use-binaries'
 
   # Internet Interface
   ii() {

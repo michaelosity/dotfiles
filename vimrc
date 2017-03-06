@@ -10,9 +10,6 @@ set encoding=utf-8              " utf-8
 set lazyredraw                  " only redraw when necessary
 set showcmd                     " show last command in lower right corner
 set showmatch                   " show matching parenthesis
-set foldenable                  " enable folding
-set foldlevelstart=10           " open most folds by default
-set foldmethod=indent           " fold based on indent level
 let mapleader=","
 syntax enable                   " color-code files
 filetype plugin indent on
