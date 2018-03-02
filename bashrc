@@ -78,10 +78,11 @@ function gupd {
 }
 
 ###
-### SECURE
+### EXTERNAL
 ###
 
-[[ -s ~/.secure ]] && source ~/.secure
+[[ -s ~/.isw ]] && source ~/.isw
+[[ -s ~/.c2s ]] && source ~/.c2s
 
 ###
 ### NON-WINDOWS
@@ -127,7 +128,7 @@ fi
 if [[ “${platform}” == “mac” ]]; then
 
   # Java
-  export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+  export JAVA_HOME=`/usr/libexec/java_home -v 9`
 
   # Swift
   latest_swift=/Library/Developer/Toolchains/swift-latest.xctoolchain
@@ -158,7 +159,7 @@ if [[ “${platform}” == “mac” ]]; then
 
   # Carthage
   alias cout='carthage outdated'
-  alias cupd='carthage update --platform iOS --configuration Release --no-use-binaries'
+  alias cupd='carthage update --platform iOS --configuration Release --no-use-binaries --cache-builds'
 
   # Internet Interface
   ii() {
@@ -170,6 +171,18 @@ if [[ “${platform}” == “mac” ]]; then
     echo -e "\nIP ADDRESS (PUBLIC)" ; curl ipecho.net/plain ; echo
     echo
   }
+
+  # Finder
+  alias show_finder_hidden_files='defaults write com.apple.finder AppleShowAllFiles TRUE && killall Finder'
+  alias hide_finder_hidden_files='defaults write com.apple.finder AppleShowAllFiles FALSE && killall Finder'
+
+  # Development
+  alias flr='bundle exec fastlane release'
+  alias fls='bundle exec fastlane stage'
+  alias flt='bundle exec fastlane test'
+  alias flv='bundle exec fastlane version'
+  alias ac='swiftlint autocorrect'
+  alias sg='swiftgen'
 
 fi
 
