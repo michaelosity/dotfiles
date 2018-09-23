@@ -81,8 +81,8 @@ function gupd {
 ### EXTERNAL
 ###
 
-[[ -s ~/.isw ]] && source ~/.isw
-[[ -s ~/.c2s ]] && source ~/.c2s
+[[ -s ~/.incrementalsoftware.bashrc ]] && source ~/.incrementalsoftware.bashrc
+[[ -s ~/.velky.bashrc ]] && source ~/.velky.bashrc
 
 ###
 ### NON-WINDOWS
@@ -128,7 +128,7 @@ fi
 if [[ “${platform}” == “mac” ]]; then
 
   # Java
-  export JAVA_HOME=`/usr/libexec/java_home -v 9`
+  export JAVA_HOME=`/usr/libexec/java_home -v 10`
 
   # Swift
   latest_swift=/Library/Developer/Toolchains/swift-latest.xctoolchain
