@@ -1,4 +1,4 @@
-####
+###
 #### INITIALIZATION
 ####
 
@@ -128,7 +128,7 @@ fi
 if [[ “${platform}” == “mac” ]]; then
 
   # Java
-  export JAVA_HOME=`/usr/libexec/java_home -v 10`
+  export JAVA_HOME=`/usr/libexec/java_home -v 11`
 
   # Swift
   latest_swift=/Library/Developer/Toolchains/swift-latest.xctoolchain

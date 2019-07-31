@@ -3,7 +3,7 @@
 echo
 echo "DOTFILES"
 
-for f in "bash_profile" "bashrc" "vimrc" "gitconfig" "gitignore_global" "gitmessage.txt"; do
+for f in "bash_profile" "bashrc" "zshrc" "vimrc" "gitconfig" "gitignore_global" "gitmessage.txt"; do
     DOTFILE="${HOME}/.${f}"
     if [[ -e "${DOTFILE}" && -h "${DOTFILE}" ]]; then
         echo "  ~/.${f} already exists"
