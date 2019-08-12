@@ -68,7 +68,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git bundler osx)
+plugins=(git bundler osx brew colored-man-pages common-aliases gem gradle postgres scala sublime xcode yarn)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -98,16 +98,8 @@ export LANG=en_US.UTF-8
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-set -o vi
 export EDITOR="vi"
 
-alias l='ls'
-alias ll='ls -l'
-alias la='ls -la'
-alias h='history'
-alias con="tail -40 -f /var/log/system.log"
-alias cd..='cd ../'
-alias ..='cd ../'
 alias duh='du -h -d 1 .'
 alias duh2='du -h -d 2 .'
 alias duh3='du -h -d 3 .'
@@ -195,9 +187,9 @@ alias cupd='carthage update --platform iOS --configuration Release --no-use-bina
 
 ### External
 
-[[ -s ~/.incrementalsoftware.zshrc ]] && source ~/.incrementalsoftware.zshrc
-[[ -s ~/.velky.zshrc ]] && source ~/.velky.zshrc
-
+[[ -s ~/.incrementalsoftware.zsh ]] && source ~/.incrementalsoftware.zsh
+[[ -s ~/.velky.zsh ]] && source ~/.velky.zsh
+[[ -s ~/.fastlane.zsh ]] && source ~/.fastlane.zsh
 
 ###  Path
 
@@ -209,4 +201,7 @@ if [ -d "${latest_swift}" ]; then
 	export PATH=${latest_swift}/usr/bin:"${PATH}"
 fi
 
+### Ruby 
+
+eval "$(rbenv init -)"
 
