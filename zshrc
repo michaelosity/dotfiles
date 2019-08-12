@@ -68,7 +68,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git bundler osx brew colored-man-pages common-aliases gem gradle postgres scala sublime xcode yarn)
+plugins=(colored-man-pages xcode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -98,7 +98,12 @@ export LANG=en_US.UTF-8
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export EDITOR="vi"
+export EDITOR="vim"
+
+# Stop it with the confirmations on rm
+setopt rmstarsilent
+
+# Common Aliases
 
 alias duh='du -h -d 1 .'
 alias duh2='du -h -d 2 .'
@@ -106,6 +111,13 @@ alias duh3='du -h -d 3 .'
 
 ### GIT
 
+alias l='ls'
+alias ll='ls -l'
+alias la='ls -la'
+alias h='history'
+alias con="tail -40 -f /var/log/system.log"
+alias cd..='cd ../'
+alias ..='cd ../'
 alias gs='git status'
 alias gl='git log -n 5'
 alias gpl='git pull'
