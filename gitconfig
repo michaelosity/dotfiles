@@ -24,6 +24,8 @@
   editor = vi
   autocrlf = input
 	excludesfile = ~/.gitignore_global
+[log]
+  pager = false
 [user]
 	name = Michael Wells
 	email = michael@michaelwells.com
@@ -46,3 +48,7 @@
   template = ~/.gitmessage.txt
 [help]
   autocorrect = 1
+[merge "ours"]
+	driver = true
+[pull]
+	rebase = true

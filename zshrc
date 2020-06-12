@@ -30,7 +30,7 @@ ZSH_THEME="agnoster"
 # DISABLE_UPDATE_PROMPT="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+export UPDATE_ZSH_DAYS=13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS=true
@@ -119,7 +119,7 @@ alias con="tail -40 -f /var/log/system.log"
 alias cd..='cd ../'
 alias ..='cd ../'
 alias gs='git status'
-alias gl='git log -n 5'
+alias gl='git --no-pager log -n 20 --pretty=oneline'
 alias gpl='git pull'
 alias gps='git push'
 alias gd='git difftool'
@@ -163,16 +163,7 @@ function marks {
 
 ### Java
 
-export JAVA_HOME=`/usr/libexec/java_home -v 11`
-
-#### Swift
-
-alias flr='bundle exec fastlane release'
-alias fls='bundle exec fastlane stage'
-alias flt='bundle exec fastlane test'
-alias flv='bundle exec fastlane version'
-alias ac='swiftlint autocorrect'
-alias sg='swiftgen'
+export JAVA_HOME=`/usr/libexec/java_home -v 13`
 
 latest_swift=/Library/Developer/Toolchains/swift-latest.xctoolchain
 xc() {
@@ -193,22 +184,28 @@ if [ -d ${homebrew_prefix}/etc/zsh_completion.d ]; then
 fi
 fi
 
-### Carthage
-alias cout='carthage outdated'
-alias cupd='carthage update --platform iOS --configuration Release --no-use-binaries --cache-builds'
+### Internet Interface
+ii() {
+  echo -e "\nHOST\n${HOSTNAME}"
+  echo -e "\nADDITIONAL INFORMATION" ; uname -a
+  echo -e "\nMACHINE STATS" ; uptime
+  echo -e "\nCURRENT NETWORK LOCATION" ; scselect
+  echo -e "\nIP ADDRESS (PRIVATE)" ; ipconfig getifaddr en0 
+  echo -e "\nIP ADDRESS (PUBLIC)" ; curl ipecho.net/plain ; echo
+  echo
+}
 
 ### External
 
 [[ -s ~/.incrementalsoftware.zsh ]] && source ~/.incrementalsoftware.zsh
 [[ -s ~/.velky.zsh ]] && source ~/.velky.zsh
-[[ -s ~/.fastlane.zsh ]] && source ~/.fastlane.zsh
 
 ###  Path
 
 # Remove /usr/local/bin and /usr/bin then add them back in the order we want
 export PATH=`echo ":${PATH}:" | sed -e "s:\:/usr/local/bin\::\::g" -e "s/^://" -e "s/:$//"`
 export PATH=`echo ":${PATH}:" | sed -e "s:\:/usr/bin\::\::g" -e "s/^://" -e "s/:$//"`
-export PATH="/usr/local/bin:/usr/bin:~/bin:${PATH}"
+export PATH="/usr/local/bin:/usr/bin:/users/Michael/bin:${PATH}"
 if [ -d "${latest_swift}" ]; then
 	export PATH=${latest_swift}/usr/bin:"${PATH}"
 fi
