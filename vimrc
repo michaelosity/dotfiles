@@ -1,4 +1,4 @@
-colorscheme gruvbox             " colorscheme
+colorscheme solarized           " colorscheme
 inoremap jj <ESC>
 set background=dark             " use dark background
 set tabstop=2                   " number of visual spaces per tab
